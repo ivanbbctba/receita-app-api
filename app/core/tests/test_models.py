@@ -1,8 +1,12 @@
 """
 Test for django models.
 """
+from decimal import Decimal
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+
+from core import models
 
 
 class ModelTests(TestCase):
@@ -47,3 +51,47 @@ class ModelTests(TestCase):
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_recipe(self):
+        """Test creating a recipe."""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123'
+        )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title='Test recipe',
+            time_minutes=5,
+            price=Decimal('5.00'),
+            description='Test description',
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
+
+    def test_create_irradiation(self):
+        """Test creating a irradiation."""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123'
+        )
+        irradiation = models.Irradiation.objects.create(
+            user=user,
+            id=1,
+            country='Test country',
+            latitude=5.00,
+            longitude=5.00,
+            annual=5.00,
+            january=5.00,
+            february=5.00,
+            march=5.00,
+            april=5.00,
+            may=5.00,
+            june=5.00,
+            july=5.00,
+            august=5.00,
+            september=5.00,
+            october=5.00,
+            november=5.00,
+            december=5.00,
+        )
+        self.assertEqual(str(irradiation), str(irradiation.id))

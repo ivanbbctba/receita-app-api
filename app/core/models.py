@@ -1,7 +1,7 @@
 """
 Database models for the app.
 """
-
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
@@ -38,3 +38,46 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
     USERNAME_FIELD = 'email'
+
+
+class Irradiation(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    id = models.IntegerField(primary_key=True)
+    country = models.CharField(max_length=255)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    annual = models.FloatField()
+    january = models.FloatField()
+    february = models.FloatField()
+    march = models.FloatField()
+    april = models.FloatField()
+    may = models.FloatField()
+    june = models.FloatField()
+    july = models.FloatField()
+    august = models.FloatField()
+    september = models.FloatField()
+    october = models.FloatField()
+    november = models.FloatField()
+    december = models.FloatField()
+
+    def __str__(self):
+        return str(self.id)
+
+
+class Recipe(models.Model):
+    """Recipe object."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    time_minutes = models.IntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    link = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
